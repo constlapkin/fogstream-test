@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mail',
+    'reg',
 ]
 
 MIDDLEWARE = [
@@ -100,7 +101,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_URL = '/admin/'
+LOGIN_URL = '/enter/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 

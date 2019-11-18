@@ -11,13 +11,31 @@
         .btn-send {
             width:25%;
         }
+        #success-message{
+            display: none;
+        }
+        #error-message{
+            display: none;
+        }
     </style>
 {% endblock %}
 
 {% block mailform %}
 <div class="container">
     <div class="row">
-        <div class="col-md-12"><h1>AJAX Mail form</h1></div>
+        <div class="col-md-12">
+            <h1>AJAX Mail form</h1>
+            <div id="success-message">
+                <div class="alert alert-success" role="alert">
+                    Sended!
+                </div>
+            </div>
+            <div id="error-message">
+                <div class="alert alert-danger" role="alert">
+                    Error!
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -60,7 +78,22 @@
                     "X-CSRFToken": csrftoken
                 },
                 data: form.serialize(),
-                dataType: 'json'
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data.status);
+                    if(data.status){
+                        $('#success-message').show();
+                        $('#error-message').hide();
+                    }
+                    else{
+                        $('#error-message').show();
+                        $('#success-message').hide();
+                    }
+                },
+                error: function() {
+                    $('#error-message').show();
+                    $('#success-message').hide();
+                }
             })
         });
       </script>

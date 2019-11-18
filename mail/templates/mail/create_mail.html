@@ -1,0 +1,67 @@
+{% extends 'mail/base.html' %}
+
+{% block css %}
+    <style>
+        .right-align {
+            text-align: right;
+        }
+        .center-align {
+            text-align: center;
+        }
+        .btn-send {
+            width:25%;
+        }
+    </style>
+{% endblock %}
+
+{% block mailform %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12"><h1>AJAX Mail form</h1></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form method="POST" data-check-email-url="/">{% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6 right-align">Title:</div>
+                    <div class="col-md-6">{{ form.title }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 right-align">Email:</div>
+                    <div class="col-md-6">{{ form.email }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 right-align">Text:</div>
+                    <div class="col-md-6">{{ form.text }}</div>
+                </div>
+                <div class="row">
+                        <div class="col-md-12 center-align">
+                            <button class="btn-send" id="send_message" type="button">Send</button>
+                        </div>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block javascript %}
+    <script>
+        $("#send_message").click(function () {
+            let form = $(this).closest("form");
+            let csrftoken = $("[name=csrfmiddlewaretoken]").val();
+            $.ajax({
+                url: form.attr("data-check-email-url"),
+                type: 'POST',
+                headers:{
+                    "X-CSRFToken": csrftoken
+                },
+                data: form.serialize(),
+                dataType: 'json'
+            })
+        });
+      </script>
+{% endblock %}

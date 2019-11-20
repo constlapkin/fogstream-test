@@ -7,19 +7,40 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Hello!</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    {% block css %}{% endblock %}
-</head>
-<body>
-    <a href="/enter/logout/">Logout</a>
-    {% block mailform %}
+   
+    <style>
+        .btn-send {
+            width:25%;
+        }
+        .alert{
+            display: none;
+        }
+        .top-button {
+            padding: 10px; 
+            border-bottom: 1px solid #999999;
+        }
+    </style>
+    {% block css %}
     {% endblock %}
 
+</head>
+<body>
 
-    
+    {% if user.is_authenticated %}
+        <div class="top-button">
+            <a href="/logout/">Logout</a>
+        </div>
+    {% endif %}
+    <div class="container">
+        {% block mailform %}
+        {% endblock %}
+    </div>
     <script src="http://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
     crossorigin="anonymous"></script>
+
     {% block javascript %}
     {% endblock %}
+
 </body>
 </html>

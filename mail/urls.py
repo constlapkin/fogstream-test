@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import MailListView
+from .views import GeneralView, LogoutView
 
 
 urlpatterns = [
-    path('', MailListView.as_view()),
+    path('', GeneralView.as_view()),
+    path('logout/', LogoutView.as_view()),
 ]

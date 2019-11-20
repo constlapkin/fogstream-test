@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mail',
-    'reg',
 ]
 
 MIDDLEWARE = [
@@ -110,6 +109,8 @@ EMAIL_HOST_USER = 'fogs-test@yandex.ru'
 EMAIL_HOST_PASSWORD = 'fogs-test123'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+CELERY_BROKER_URL = 'amqp://localhost'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/

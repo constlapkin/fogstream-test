@@ -1,0 +1,92 @@
+{% extends 'mail/base.html' %}
+
+    {% block mailform %}
+        
+        <div class="container">
+            {% if form1 %}
+                <h1>Signup</h1>
+                <form method="post" data-check-reg-url="/">
+                    {% csrf_token %}
+                    {{ form1.as_p }}
+                    <input name="type" value="reg" hidden>
+                    <button type="button" id="reg_b">Signup</button>
+                </form>    
+            {% endif %}
+
+            {% if form1 and form2 %}
+                <br /><hr><br />
+            {% endif %}
+
+            {% if form2 %}
+                <h1>Login</h1>
+                <form method="post" data-check-auth-url="/">
+                    {% csrf_token %}
+                    {{ form2.as_p }}
+                    <input name="type" value="auth" hidden>
+                    <button type="button" id="auth_b">Login</button>
+                </form>
+            {% endif %}
+        </div>
+        
+    {% endblock %}
+
+    {% block javascript %}
+    <script>
+        $("#auth_b").click(function () {
+            let form = $(this).closest("form");
+            let csrftoken = $("[name=csrfmiddlewaretoken]").val();
+            $.ajax({
+                url: form.attr("data-check-auth-url"),
+                type: 'POST',
+                headers:{
+                    "X-CSRFToken": csrftoken
+                },
+                data: form.serialize(),
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data.status);
+                    if(data.status){
+                        $('#success-message').show();
+                        $('#error-message').hide();
+                    }
+                    else{
+                        $('#error-message').show();
+                        $('#success-message').hide();
+                    }
+                },
+                error: function() {
+                    $('#error-message').show();
+                    $('#success-message').hide();
+                }
+            })
+        });
+        $("#reg_b").click(function () {
+            let form = $(this).closest("form");
+            let csrftoken = $("[name=csrfmiddlewaretoken]").val();
+            $.ajax({
+                url: form.attr("data-check-reg-url"),
+                type: 'POST',
+                headers:{
+                    "X-CSRFToken": csrftoken
+                },
+                data: form.serialize(),
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data.status);
+                    if(data.status){
+                        $('#success-message').show();
+                        $('#error-message').hide();
+                    }
+                    else{
+                        $('#error-message').show();
+                        $('#success-message').hide();
+                    }
+                },
+                error: function() {
+                    $('#error-message').show();
+                    $('#success-message').hide();
+                }
+            })
+        });
+      </script>
+{% endblock %}

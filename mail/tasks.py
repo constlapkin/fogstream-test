@@ -17,8 +17,8 @@ def send_email(title, text, email, pk_author):
             new_data = el
             for elnd in new_data:
                 str_data = str_data + elnd + ': ' + str(new_data[elnd]).\
-                           replace("'", "").replace('{', '\n').replace('}', '').\
-                           replace(', ', '\n') + '\n'
+                           replace("'", "").replace('{', '\n').\
+                           replace('}', '').replace(', ', '\n') + '\n'
             break
 
     if text and new_data:

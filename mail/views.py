@@ -1,4 +1,3 @@
-# from django.views.generic.edit import CreateView
 from django.views.generic.edit import FormView
 from django.http import HttpResponseRedirect
 from django.views.generic.base import View
@@ -6,8 +5,6 @@ from .forms import MailForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import JsonResponse
-# from django.contrib.auth.decorators import login_required
-# from django.utils.decorators import method_decorator
 from .tasks import send_email
 from django.contrib.auth import login, logout
 from django.shortcuts import render
@@ -15,36 +12,6 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
-
-
-# class AjaxableResponseMixin(object):
-#     def form_invalid(self, form):
-#         response = super(AjaxableResponseMixin, self).form_invalid(form)
-#         if self.request.is_ajax():
-#             return JsonResponse(form.errors, status=400)
-#         else:
-#             return response
-
-#     def form_valid(self, form):
-#         if self.request.is_ajax():
-#             email = self.request.POST.get('email', None)
-#             text = self.request.POST.get('text', None)
-#             title = self.request.POST.get('title', None)
-#             author = self.request.user
-
-#             send_email.delay(title, text, email, author.pk)
-#             status = {}
-#             status['status'] = 1
-#         else:
-#             status = {}
-#             status['status'] = 0
-#         return JsonResponse(status)
-
-
-# @method_decorator(login_required, name='dispatch')
-# class MailListView(AjaxableResponseMixin, CreateView):
-#     form_class = MailForm
-#     template_name = 'mail/create_mail.html'
 
 
 class GeneralView(FormView):

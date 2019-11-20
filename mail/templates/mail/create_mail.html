@@ -1,68 +1,28 @@
 {% extends 'mail/base.html' %}
 
-{% block css %}
-    <style>
-        .right-align {
-            text-align: right;
-        }
-        .center-align {
-            text-align: center;
-        }
-        .btn-send {
-            width:25%;
-        }
-        #success-message{
-            display: none;
-        }
-        #error-message{
-            display: none;
-        }
-    </style>
-{% endblock %}
 
 {% block mailform %}
-<div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>AJAX Mail form</h1>
-            <div id="success-message">
-                <div class="alert alert-success" role="alert">
-                    Sended!
-                </div>
+            <h1>Mail form</h1>
+            <div class="alert alert-success" id="success-message" role="alert">
+                Sended!
             </div>
-            <div id="error-message">
-                <div class="alert alert-danger" role="alert">
-                    Error!
-                </div>
+            <div class="alert alert-danger" id="error-message" role="alert">
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <form method="POST" data-check-email-url="/">{% csrf_token %}
-                <div class="row">
-                    <div class="col-md-6 right-align">Title:</div>
-                    <div class="col-md-6">{{ form.title }}</div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 right-align">Email:</div>
-                    <div class="col-md-6">{{ form.email }}</div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 right-align">Text:</div>
-                    <div class="col-md-6">{{ form.text }}</div>
-                </div>
+            <form method="POST" data-check-email-url="/">
+                {% csrf_token %}
+                {{ form.as_p }}
                 <input name="type" value="mail" hidden>
-                <div class="row">
-                        <div class="col-md-12 center-align">
-                            <button class="btn-send" id="send_message" type="button">Send</button>
-                        </div>
-                </div>
-                
+                <button class="btn-send" id="send_message" type="button">Send</button>
             </form>
         </div>
     </div>
-</div>
+
 {% endblock %}
 
 
@@ -81,18 +41,38 @@
                 data: form.serialize(),
                 dataType: 'json',
                 success: function(data) {
-                    console.log(data.status);
-                    if(data.status){
+                    if(data['status'] == 1){
                         $('#success-message').show();
                         $('#error-message').hide();
                     }
-                    else{
+                    else if (data['status'] == 12) {
+                        $('#error-message-auth').show();
+                        $('#error-message-auth').empty();
+                        $('#error-message-auth').append("First you're need to signup!");
+                        $('#success-message-auth').hide();
+                    }
+                    else {
                         $('#error-message').show();
+                        $('#error-message').empty();
                         $('#success-message').hide();
+                        if(data['title'] != ''){
+                            $('#error-message').append(data['title'].concat('<br />'));
+                        }
+                        if(data['email'] != ''){
+                            $('#error-message').append(data['email'].concat('<br />'));
+                        }
+                        else if (data['email_is_not_valid'] != '') {
+                            $('#error-message').append(data['email_is_not_valid'].concat('<br />'));
+                        }
+                        if(data['text'] != ''){
+                            $('#error-message').append(data['text'].concat('<br />'));
+                        }
                     }
                 },
                 error: function() {
                     $('#error-message').show();
+                    $('#error-message').empty();
+                    $('#error-message').append('Something is going wrong...');
                     $('#success-message').hide();
                 }
             })

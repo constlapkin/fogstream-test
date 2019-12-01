@@ -46,7 +46,11 @@ class GeneralView(FormView):
         min_length = 8
         if username == '':
             errors['username'] = "You didn't enter a username"
-        if User.objects.get(username=username):
+        try:
+            expect = User.objects.get(username=username)
+        except User.DoesNotExist:
+            expect = None
+        if expect is not None:
             errors['username'] = "This username is busy"
         if password1 == '' or password2 == '':
             errors['password'] = "You didn't enter a password \
